@@ -6,9 +6,13 @@ output: html_notebook
 This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook analyzing FBI reported murders from [Murder Accountability Project](www.murderdata.org/p/data-docs.html). When you execute code within the notebook, the results appear beneath the code. 
 
 
-```{murderperyear}
+```{r, murderperyear}
+library(readr)
+library(ggplot2)
+murder_db <- read_csv("murder_db.csv")
 
-plot(cars)
+ggplot(murder_db, aes(x=murder_db$))
+
 ```
 
 Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Cmd+Option+I*.
