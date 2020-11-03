@@ -1,17 +1,30 @@
 ---
 title: "FBI MurdeR Analysis Notebook"
-output: html_notebook
+output:
+  html_document:
+    df_print: paged
 ---
 
 This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook analyzing FBI reported murders from [Murder Accountability Project](www.murderdata.org/p/data-docs.html). When you execute code within the notebook, the results appear beneath the code. 
 
+The state data came from [here](https://www.infoplease.com/us/states/state-population-by-rank)
 
 ```{r, murderperyear}
 library(readr)
 library(ggplot2)
-murder_db <- read_csv("murder_db.csv")
 
-ggplot(murder_db, aes(x=murder_db$))
+murder_db <- read_csv("murder_db.csv")
+state_pop <- read_csv("statepops.csv")
+state_murders<-as.data.frame(table(murder_db$State))
+colnames(state_murders)<-c("State", "Counts")
+state_info <- merge(state_pop, state_murders, by="State")
+state_info$Population<-as.numeric(state_info$Population)
+state_info$Counts<-as.numeric(state_info$Counts)
+state_info$"percapita"<-state_info$Counts/state_info$Population
+
+ggplot(state_info, aes(State, percapita)) + geom_bar(stat = "identity") + theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = .1)) 
+
+
 
 ```
 
